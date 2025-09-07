@@ -1,0 +1,8 @@
+[meta]
+name     = "No more hidden Effects!"
+author   = "Cello"
+category = "Utilities"
+version  = "1.0.0"
+
+[script]
+dependencies = ["Camera"]
