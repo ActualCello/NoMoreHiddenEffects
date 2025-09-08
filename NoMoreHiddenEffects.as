@@ -51,14 +51,10 @@ void RunScan() {
     print("Scanning for boosters...");
     auto app = cast<CGameCtnApp>(GetApp());
     if (app is null || app.CurrentPlayground is null) { ClearBoosters(); MapUid = ""; return; }
+    if (app.RootMap is null) { ClearBoosters(); MapUid = ""; return; }
     auto playground = cast<CGamePlayground>(app.CurrentPlayground);
-    if (playground is null || app.RootMap is null) { ClearBoosters(); MapUid = ""; return; }
     if (playground.GameTerminals.Length == 0 || playground.GameTerminals[0].UISequence_Current != CGamePlaygroundUIConfig::EUISequence::Playing) { ClearBoosters(); MapUid = ""; return; }
     ClearBoosters();
-    array<string> keywords = {
-        "turbo", "boost", "noengine", "nobrake", "nosteering", "cruise", "reset", "fragile", "slowmotion",
-        "gameplaystadium", "gameplaysnow", "gameplayrally", "gameplaydesert"
-    };
     array<string> boosterKeywords = { "turbo", "boost" };
     array<string> effectKeywords = { "noengine", "nobrake", "nosteering", "cruise", "reset", "fragile", "slowmotion" };
     array<string> carKeywords = { "gameplaystadium", "gameplaysnow", "gameplayrally", "gameplaydesert" };
@@ -279,24 +275,28 @@ void DrawEffectDot(const vec3 &in screenPos, const vec4 &in color) {
 void DrawCarSwitchDot(const vec3 &in screenPos, const vec4 &in color) {
     nvg::BeginPath();
     nvg::Circle(vec2(screenPos.x, screenPos.y), dotSize+4);
-    nvg::FillColor(vec4(0, 0, 0, 1.0));
+    nvg::FillColor(color);
     nvg::Fill();
     nvg::BeginPath();
     nvg::Circle(vec2(screenPos.x, screenPos.y), dotSize-2);
-    nvg::FillColor(color);
+    nvg::FillColor(vec4(0, 0, 0, 1.0));
     nvg::Fill();
 }
 
 void DrawBoosterName(const vec3 &in screenPos, const string &in displayName) {
     nvg::FontSize(fontSize);
     nvg::TextAlign(nvg::Align::Center | nvg::Align::Middle);
+
+    array<vec2> offsets = {
+        vec2(-1, 0), vec2(1, 0), vec2(0, -1), vec2(0, 1),
+        vec2(-1, -1), vec2(-1, 1), vec2(1, -1), vec2(1, 1)
+    };
+
     nvg::FillColor(vec4(0, 0, 0, 1.0));
-    for (int dx = -2; dx <= 2; dx++) {
-        for (int dy = -2; dy <= 2; dy++) {
-            if (dx == 0 && dy == 0) continue;
-            nvg::Text(screenPos.x + dx, screenPos.y - 28 + dy, displayName);
-        }
+    for (uint i = 0; i < offsets.Length; i++) {
+        nvg::Text(screenPos.x + offsets[i].x, screenPos.y - 28 + offsets[i].y, displayName);
     }
+
     if (displayName == "Random Boost") {
         nvg::FillColor(vec4(1, 0.8, 0.2, 1.0));
     } else {
@@ -317,7 +317,7 @@ string GetDisplayName(const string &in rawName) {
         if (Math::Rand(0, 99) == 0) return "Riolu";
         return "Slow-Motion";
     }
-    if (lower.Contains("gameplaystadium")) return "Default Car";
+    if (lower.Contains("gameplaystadium")) return "Stadium Car";
     if (lower.Contains("gameplaysnow")) return "Snow Car";
     if (lower.Contains("gameplayrally")) return "Rally Car";
     if (lower.Contains("gameplaydesert")) return "Desert Car";
