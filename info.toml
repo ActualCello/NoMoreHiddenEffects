@@ -2,7 +2,7 @@
 name     = "No more hidden Effects!"
 author   = "Cello"
 category = "Utilities"
-version  = "1.0.0"
+version  = "1.0.01"
 
 [script]
 dependencies = ["Camera"]
