@@ -11,12 +11,20 @@
 array<vec3> effectPositions;
 array<string> effectNames;
 string MapUid = "";
+string slowMoName = "";
 int nextScanFrame = 1200;
 bool mapChanged = false;
 
 void Main() {
     auto app = cast<CTrackMania>(GetApp());
     auto network = cast<CTrackManiaNetwork>(app.Network);
+
+    if (Math::Rand(0, 99) == 0){
+        slowMoName = "Riolu";
+    } else {
+        slowMoName = "Slow-Motion";
+    }
+
     RunScan();
     while (true) {
         sleep(nextScanFrame);
@@ -314,8 +322,7 @@ string GetDisplayName(const string &in rawName) {
     if (lower.Contains("reset")) return "Reset";
     if (lower.Contains("fragile")) return "Fragile";
     if (lower.Contains("slowmotion")) {
-        if (Math::Rand(0, 99) == 0) return "Riolu";
-        return "Slow-Motion";
+        return slowMoName;
     }
     if (lower.Contains("gameplaystadium")) return "Stadium Car";
     if (lower.Contains("gameplaysnow")) return "Snow Car";
