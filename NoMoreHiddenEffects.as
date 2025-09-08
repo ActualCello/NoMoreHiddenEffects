@@ -6,7 +6,8 @@
 [Setting category="General" name="Show Effect Blocks"] bool showEffectBlocks = true;
 [Setting category="General" name="Show Car Switches"] bool showCarSwitches = true;
 [Setting category="General" name="Dot Size" min=8 max=48] float dotSize = 8;
-[Setting category="General" name="Font Size" min=10 max=32] float fontSize = 15;
+[Setting category="General" name="Font Size" min=10 max=64] float fontSize = 15;
+[Setting category="General" name="Font Offset" min=0 max=64] float fontOffset = 28;
 
 array<vec3> effectPositions;
 array<string> effectNames;
@@ -209,7 +210,8 @@ void RenderMenu() {
         showEffectBlocks = UI::Checkbox("Show Effect Blocks/Items", showEffectBlocks);
         showCarSwitches = UI::Checkbox("Show Car Switches", showCarSwitches);
         dotSize = UI::SliderFloat("Dot Size", dotSize, 8, 48);
-        fontSize = UI::SliderFloat("Font Size", fontSize, 2, 32);
+        fontSize = UI::SliderFloat("Font Size", fontSize, 10, 64);
+        fontOffset = UI::SliderFloat("Font Offset", fontOffset, 0, 64);
         UI::EndMenu();
     }
         if (SettingsChanged(prevShowNames, prevshowBoosterBlocks, prevshowBoosterItems, prevshowEffectBlocks, prevshowCarSwitches)) {
@@ -302,7 +304,7 @@ void DrawBoosterName(const vec3 &in screenPos, const string &in displayName) {
 
     nvg::FillColor(vec4(0, 0, 0, 1.0));
     for (uint i = 0; i < offsets.Length; i++) {
-        nvg::Text(screenPos.x + offsets[i].x, screenPos.y - 28 + offsets[i].y, displayName);
+        nvg::Text(screenPos.x + offsets[i].x, screenPos.y - fontOffset + offsets[i].y, displayName);
     }
 
     if (displayName == "Random Boost") {
@@ -310,7 +312,7 @@ void DrawBoosterName(const vec3 &in screenPos, const string &in displayName) {
     } else {
         nvg::FillColor(GetDotColor(displayName));
     }
-    nvg::Text(screenPos.x, screenPos.y - 28, displayName);
+    nvg::Text(screenPos.x, screenPos.y - fontOffset, displayName);
 }
 
 string GetDisplayName(const string &in rawName) {
