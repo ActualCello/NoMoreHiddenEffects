@@ -181,7 +181,7 @@ void Render() {
         ) {
             DrawEffectDot(screenPos, GetDotColor(displayName));
         } else if (
-            displayName == "Default Car" || displayName == "Snow Car" || displayName == "Rally Car" || displayName == "Desert Car"
+            displayName == "Stadium Car" || displayName == "Snow Car" || displayName == "Rally Car" || displayName == "Desert Car"
         ) {
             DrawCarSwitchDot(screenPos, GetDotColor(displayName));
         } else {
@@ -345,7 +345,7 @@ vec4 GetDotColor(const string &in displayName) {
     if (displayName == "Fragile") return vec4(255.0/255.0, 139.0/255.0, 33.0/255.0, 1.0);
     if (displayName == "Slow-Motion") return vec4(238.0/255.0, 231.0/255.0, 222.0/255.0, 1.0);
     if (displayName == "Riolu") return vec4(238.0/255.0, 231.0/255.0, 222.0/255.0, 1.0); 
-    if (displayName == "Default Car") return vec4(24.0/255.0, 215.0/255.0, 119.0/255.0, 1.0); 
+    if (displayName == "Stadium Car") return vec4(24.0/255.0, 215.0/255.0, 119.0/255.0, 1.0); 
     if (displayName == "Snow Car") return vec4(208.0/255.0, 4.0/255.0, 3.0/255.0, 1.0); 
     if (displayName == "Rally Car") return vec4(255.0/255.0, 149.0/255.0, 14.0/255.0, 1.0); 
     if (displayName == "Desert Car") return vec4(255.0/255.0, 234.0/255.0, 65.0/255.0, 1.0); 
